@@ -9,13 +9,15 @@ namespace Lab12.Models
 
         [Required]
         public string Name { get; set; }
-        [Required] 
+        [Required]
         public string Address { get; set; }
-        [Required] 
+        [Required]
         public string City { get; set; }
-        [Required] 
+        [Required]
         public string State { get; set; }
         [Required]
         public string Phone { get; set; }
+
+        public List<HotelRoom> HotelRooms { get; set; }
     }
 }

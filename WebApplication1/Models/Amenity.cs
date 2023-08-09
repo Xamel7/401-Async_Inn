@@ -10,6 +10,7 @@ namespace Lab12.Models
         public int ID { get; set; }
         [Required]
         public string Name { get; set; }
-    
+
+        public List<RoomAmenity> RoomAmenitities { get; set; }    
     }
 }

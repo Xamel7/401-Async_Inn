@@ -28,7 +28,7 @@ namespace Lab12
 
             var app = builder.Build();
 
-            //app.MapGet("/", () => "Hello World!");
+            app.MapGet("/", () => "Hello World!");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

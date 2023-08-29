@@ -3,6 +3,8 @@ using Lab12.Models.Interfaces;
 using Lab12.Models.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace Lab12
 {
@@ -11,11 +13,19 @@ namespace Lab12
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Services.AddTransient<IHotel, HotelService>();
             // Add services to the container.
-            builder.Services.AddControllersWithViews().AddJsonOptions(o => {
-                o.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-            });
+            builder.Services.AddControllersWithViews()
+                            .AddJsonOptions(options =>
+                            {
+                                //Ignore Data Cycling Errors
+                                options.JsonSerializerOptions.ReferenceHandler
+                                    = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+                                //CamelCase JSON Attributes
+                                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                                //Leave out null data fields in objects
+                                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                            });
 
             builder.Services.AddSwaggerGen(options =>
             {
@@ -39,12 +49,14 @@ namespace Lab12
 
             var app = builder.Build();
 
-            app.UseSwagger(options => {
+            app.UseSwagger(options =>
+            {
                 options.RouteTemplate = "/api/{documentName}/" +
                 "swagger.json";
             });
 
-            app.UseSwaggerUI(options => {
+            app.UseSwaggerUI(options =>
+            {
                 options.SwaggerEndpoint("/api/v20/swagger.json",
                    "Async Inn");
                 options.RoutePrefix = "docs";

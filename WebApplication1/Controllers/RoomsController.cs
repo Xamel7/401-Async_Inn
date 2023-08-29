@@ -86,7 +86,7 @@ namespace Lab12.Controllers
 
         // POST: api/Rooms
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
+        [HttpPost("{id}")]
         public async Task<ActionResult<Room>> PostRoom(Room room)
         {
             if (_context.Room == null)

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Lab12.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Lab12.Models.Interfaces
 {

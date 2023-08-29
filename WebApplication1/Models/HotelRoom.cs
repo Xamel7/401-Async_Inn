@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lab12.Models
 {
@@ -12,7 +13,7 @@ namespace Lab12.Models
 
         public string? Name { get; set; }
         public int RoomID { get; set; }
-        [Required]
+        [ForeignKey("Hotel")]
         public int HotelID { get; set; }
         [Required]
         public double Price { get; set; }

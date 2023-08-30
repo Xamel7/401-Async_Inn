@@ -26,22 +26,22 @@ namespace Lab12.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Amenity>>> GetAmenity()
         {
-            if (_context.Amenity == null)
+            if (_context.Amenities == null)
             {
                 return NotFound();
             }
-            return await _context.Amenity.ToListAsync();
+            return await _context.Amenities.ToListAsync();
         }
 
         // GET: api/Amenities/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Amenity>> GetAmenity(int id)
         {
-            if (_context.Amenity == null)
+            if (_context.Amenities == null)
             {
                 return NotFound();
             }
-            var amenity = await _context.Amenity.FindAsync(id);
+            var amenity = await _context.Amenities.FindAsync(id);
 
             if (amenity == null)
             {
@@ -87,11 +87,11 @@ namespace Lab12.Controllers
         [HttpPost]
         public async Task<ActionResult<Amenity>> PostAmenity(Amenity amenity)
         {
-            if (_context.Amenity == null)
+            if (_context.Amenities == null)
             {
                 return Problem("Entity set 'AsyncInnContext.Amenity'  is null.");
             }
-            _context.Amenity.Add(amenity);
+            _context.Amenities.Add(amenity);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetAmenity", new { id = amenity.ID }, amenity);
@@ -101,17 +101,17 @@ namespace Lab12.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAmenity(int id)
         {
-            if (_context.Amenity == null)
+            if (_context.Amenities == null)
             {
                 return NotFound();
             }
-            var amenity = await _context.Amenity.FindAsync(id);
+            var amenity = await _context.Amenities.FindAsync(id);
             if (amenity == null)
             {
                 return NotFound();
             }
 
-            _context.Amenity.Remove(amenity);
+            _context.Amenities.Remove(amenity);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -119,7 +119,7 @@ namespace Lab12.Controllers
 
         private bool AmenityExists(int id)
         {
-            return (_context.Amenity?.Any(e => e.ID == id)).GetValueOrDefault();
+            return (_context.Amenities?.Any(e => e.ID == id)).GetValueOrDefault();
         }
     }
 }

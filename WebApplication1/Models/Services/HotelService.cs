@@ -16,8 +16,8 @@ namespace Lab12.Models.Services
         public async Task<IActionResult> DeleteHotel(int id)
         {
             //former hotel controller functionality
-            var hotel = await _context.Hotel.FindAsync(id);
-            _context.Hotel.Remove(hotel);
+            var hotel = await _context.Hotels.FindAsync(id);
+            _context.Hotels.Remove(hotel);
             await _context.SaveChangesAsync();
             //end
             return null;
@@ -27,22 +27,22 @@ namespace Lab12.Models.Services
         //Get All Hotels
         public async Task<ActionResult<IEnumerable<Hotel>>> GetHotel()
         {
-            return await _context.Hotel.ToListAsync();
+            return await _context.Hotels.ToListAsync();
         }
         //Get a Hotel
         public async Task<ActionResult<Hotel>> GetHotel(int id)
         {
-            return await _context.Hotel.FindAsync(id);
+            return await _context.Hotels.FindAsync(id);
         }
 
         public bool HotelExists(int id)
         {
-            return (_context.Hotel?.Any(e => e.ID == id)).GetValueOrDefault();
+            return (_context.Hotels?.Any(e => e.ID == id)).GetValueOrDefault();
         }
 
         public async Task<ActionResult<Hotel>> PostHotel(Hotel hotel)
         {
-            _context.Hotel.Add(hotel);
+            _context.Hotels.Add(hotel);
             await _context.SaveChangesAsync();
             return hotel;
         }

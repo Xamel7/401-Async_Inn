@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lab12.Migrations
 {
     [DbContext(typeof(AsyncInnContext))]
-    [Migration("20230829165934_IdentityUser")]
-    partial class IdentityUser
+    [Migration("20230829224409_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,7 +39,7 @@ namespace Lab12.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Amenity");
+                    b.ToTable("Amenities");
                 });
 
             modelBuilder.Entity("Lab12.Models.Hotel", b =>
@@ -72,7 +72,7 @@ namespace Lab12.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Hotel");
+                    b.ToTable("Hotels");
                 });
 
             modelBuilder.Entity("Lab12.Models.HotelAmenity", b =>
@@ -119,7 +119,7 @@ namespace Lab12.Migrations
                     b.Property<int>("HotelID")
                         .HasColumnType("int");
 
-                    b.Property<int>("HotelID1")
+                    b.Property<int?>("HotelID1")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -160,7 +160,7 @@ namespace Lab12.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Room");
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("Lab12.Models.RoomAmenity", b =>
@@ -250,6 +250,10 @@ namespace Lab12.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -301,6 +305,10 @@ namespace Lab12.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -388,6 +396,17 @@ namespace Lab12.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Lab12.Models.ApplicationUser", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("ApplicationUser");
+                });
+
             modelBuilder.Entity("Lab12.Models.HotelRoom", b =>
                 {
                     b.HasOne("Lab12.Models.HotelAmenity", "Hotel")
@@ -398,9 +417,7 @@ namespace Lab12.Migrations
 
                     b.HasOne("Lab12.Models.Hotel", null)
                         .WithMany("HotelRooms")
-                        .HasForeignKey("HotelID1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HotelID1");
 
                     b.HasOne("Lab12.Models.Room", "Room")
                         .WithMany("HotelRooms")

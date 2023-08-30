@@ -5,13 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Lab12.Data
 {
-    public class AsyncInnContext : DbContext
+    public class AsyncInnContext : IdentityDbContext
     {
         public DbSet<Amenity> Amenities { get; set; }
         public DbSet<RoomAmenity> RoomAmenities { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<HotelRoom> HotelRooms { get; set; }
         public DbSet<Hotel> Hotels { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
         public AsyncInnContext(DbContextOptions<AsyncInnContext> options) : base(options)
         {
@@ -48,12 +49,5 @@ namespace Lab12.Data
             //{ ID = 1, HotelID = 1, RoomID = 1, Price = 100.99 });
         }
 
-
-
-        public DbSet<Lab12.Models.Hotel> Hotel { get; set; } = default!;
-
-        public DbSet<Lab12.Models.Amenity> Amenity { get; set; } = default!;
-
-        public DbSet<Lab12.Models.Room> Room { get; set; } = default!;
     }
 }

@@ -1,4 +1,5 @@
 using Lab12.Data;
+using Lab12.Models;
 using Lab12.Models.Interfaces;
 using Lab12.Models.Services;
 using Microsoft.EntityFrameworkCore;
@@ -54,7 +55,8 @@ namespace Lab12
                     builder.Configuration
                     .GetConnectionString("DefaultConnection")));
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AsyncInnContext>();
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<AsyncInnContext>();
 
             builder.Services.AddTransient<IHotel, HotelService>();
 

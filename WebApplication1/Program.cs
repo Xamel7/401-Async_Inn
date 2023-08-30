@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Microsoft.AspNetCore.Identity;
 
 namespace Lab12
 {
@@ -26,7 +27,15 @@ namespace Lab12
                                 //Leave out null data fields in objects
                                 options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                             });
-
+            //builder.Services.AddDbContext<IdentityUser>(options =>
+            //{
+            //    options.SignIn.RequireConfirmedAccount = true;
+            //    options.Password.RequireDigit = false;
+            //    options.Password.RequiredLength = 6;
+            //    options.Password.RequiredNonAlphanumeric = false;
+            //    options.Password.RequiredUppercase = false;
+            //    options.Password.RequiredLowercase = false;
+            //})
             builder.Services.AddSwaggerGen(options =>
             {
                 // Make sure get the "using Statement"
@@ -44,6 +53,8 @@ namespace Lab12
                 options.UseSqlServer(
                     builder.Configuration
                     .GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AsyncInnContext>();
 
             builder.Services.AddTransient<IHotel, HotelService>();
 

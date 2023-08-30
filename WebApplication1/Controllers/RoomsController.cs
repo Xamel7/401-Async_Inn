@@ -25,11 +25,11 @@ namespace Lab12.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Room>>> GetRoom()
         {
-            if (_context.Room == null)
+            if (_context.Rooms == null)
             {
                 return NotFound();
             }
-            return await _context.Room
+            return await _context.Rooms
                 .Include(room => room.HotelRooms)
                 .ThenInclude(hotelroom => hotelroom.Hotel)
                 .ToListAsync();
@@ -39,11 +39,11 @@ namespace Lab12.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Room>> GetRoom(int id)
         {
-            if (_context.Room == null)
+            if (_context.Rooms == null)
             {
                 return NotFound();
             }
-            var room = await _context.Room.FindAsync(id);
+            var room = await _context.Rooms.FindAsync(id);
 
             if (room == null)
             {
@@ -89,11 +89,11 @@ namespace Lab12.Controllers
         [HttpPost("{id}")]
         public async Task<ActionResult<Room>> PostRoom(Room room)
         {
-            if (_context.Room == null)
+            if (_context.Rooms == null)
             {
                 return Problem("Entity set 'AsyncInnContext.Room'  is null.");
             }
-            _context.Room.Add(room);
+            _context.Rooms.Add(room);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRoom", new { id = room.ID }, room);
@@ -103,16 +103,16 @@ namespace Lab12.Controllers
         [HttpPost]
         public async Task<ActionResult<Amenity>>PostAmenityToRoom(int amenityID, int roomID)
         {
-            if (_context.Room == null)
+            if (_context.Rooms == null)
             {
                 return Problem("Entity set 'AsyncInnContext.Amenity' is null");
             }
-            var amenity = _context.Amenity.FindAsync(amenityID);
+            var amenity = _context.Amenities.FindAsync(amenityID);
             if(amenity == null)
             {
                 return Problem("No Amenity with that ID exists");
             }
-            var room = _context.Room.FindAsync(roomID);
+            var room = _context.Rooms.FindAsync(roomID);
             if(room == null)
             {
                 return Problem("No Room with that ID exists");
@@ -138,17 +138,17 @@ namespace Lab12.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRoom(int id)
         {
-            if (_context.Room == null)
+            if (_context.Rooms == null)
             {
                 return NotFound();
             }
-            var room = await _context.Room.FindAsync(id);
+            var room = await _context.Rooms.FindAsync(id);
             if (room == null)
             {
                 return NotFound();
             }
 
-            _context.Room.Remove(room);
+            _context.Rooms.Remove(room);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -156,7 +156,7 @@ namespace Lab12.Controllers
 
         private bool RoomExists(int id)
         {
-            return (_context.Room?.Any(e => e.ID == id)).GetValueOrDefault();
+            return (_context.Rooms?.Any(e => e.ID == id)).GetValueOrDefault();
         }
     }
 }

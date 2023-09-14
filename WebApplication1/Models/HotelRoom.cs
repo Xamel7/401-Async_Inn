@@ -13,14 +13,13 @@ namespace Lab12.Models
 
         public string? Name { get; set; }
         public int RoomID { get; set; }
-        [ForeignKey("Hotel")]
         public int HotelID { get; set; }
         [Required]
         public double Price { get; set; }
         [Required]
 
         //Navigation Properties
-        public HotelAmenity? Hotel { get; set; }
+        public Hotel? Hotel { get; set; }
         public Room? Room { get; set; }
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lab12.Migrations
 {
     [DbContext(typeof(AsyncInnContext))]
-    [Migration("20230829224409_initial")]
-    partial class initial
+    [Migration("20230911183607_user")]
+    partial class user
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,6 +40,13 @@ namespace Lab12.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Amenities");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Name = "A/C"
+                        });
                 });
 
             modelBuilder.Entity("Lab12.Models.Hotel", b =>
@@ -73,39 +80,17 @@ namespace Lab12.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Hotels");
-                });
 
-            modelBuilder.Entity("Lab12.Models.HotelAmenity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("HotelAmenity");
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Address = "123 Sesame St",
+                            City = "Memphis",
+                            Name = "Async Inn Hotel",
+                            Phone = "555-555-5555",
+                            State = "TN"
+                        });
                 });
 
             modelBuilder.Entity("Lab12.Models.HotelRoom", b =>
@@ -117,9 +102,6 @@ namespace Lab12.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<int>("HotelID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("HotelID1")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -136,11 +118,19 @@ namespace Lab12.Migrations
 
                     b.HasIndex("HotelID");
 
-                    b.HasIndex("HotelID1");
-
                     b.HasIndex("RoomID");
 
                     b.ToTable("HotelRooms");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            HotelID = 1,
+                            Name = "Basic Double Room",
+                            Price = 100.98999999999999,
+                            RoomID = 1
+                        });
                 });
 
             modelBuilder.Entity("Lab12.Models.Room", b =>
@@ -161,6 +151,26 @@ namespace Lab12.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Rooms");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            Layout = 0,
+                            Name = "Basic Room"
+                        },
+                        new
+                        {
+                            ID = 2,
+                            Layout = 1,
+                            Name = "Basic Single Room"
+                        },
+                        new
+                        {
+                            ID = 3,
+                            Layout = 2,
+                            Name = "Basic Double Room"
+                        });
                 });
 
             modelBuilder.Entity("Lab12.Models.RoomAmenity", b =>
@@ -184,6 +194,14 @@ namespace Lab12.Migrations
                     b.HasIndex("RoomID");
 
                     b.ToTable("RoomAmenities");
+
+                    b.HasData(
+                        new
+                        {
+                            ID = 1,
+                            AmenityID = 1,
+                            RoomID = 1
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -409,15 +427,11 @@ namespace Lab12.Migrations
 
             modelBuilder.Entity("Lab12.Models.HotelRoom", b =>
                 {
-                    b.HasOne("Lab12.Models.HotelAmenity", "Hotel")
-                        .WithMany()
+                    b.HasOne("Lab12.Models.Hotel", "Hotel")
+                        .WithMany("HotelRooms")
                         .HasForeignKey("HotelID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Lab12.Models.Hotel", null)
-                        .WithMany("HotelRooms")
-                        .HasForeignKey("HotelID1");
 
                     b.HasOne("Lab12.Models.Room", "Room")
                         .WithMany("HotelRooms")

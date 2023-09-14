@@ -46,7 +46,7 @@ namespace Lab12.Data
             modelBuilder.Entity<RoomAmenity>().HasData(new RoomAmenity
             { ID = 1, AmenityID = 1, RoomID = 1 });
             modelBuilder.Entity<HotelRoom>().HasData(new HotelRoom
-            { ID = 1, HotelID = 1, RoomID = 1, Price = 100.99 });
+            { ID = 1, HotelID = 1, RoomID = 1, Name = "Basic Double Room", Price = 100.99 });
         }
 
     }

@@ -11,13 +11,9 @@ namespace Lab12.Models
         public string Id { get; set; }
         [Required]
         public string Password { get; set; }
-        [Required]
-        public string Email { get; set; }
-        [Required]
-        public string PhoneNumber { get; set; }
-        [Required]
+        [NotMapped]
         public string? Token { get; set; }
-        [Required]
+        
 
         [NotMapped]
         public IList<string>? Roles { get; set; }

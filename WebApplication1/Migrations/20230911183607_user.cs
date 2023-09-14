@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Lab12.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class user : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,23 +65,6 @@ namespace Lab12.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "HotelAmenity",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    State = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HotelAmenity", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -228,23 +213,17 @@ namespace Lab12.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoomID = table.Column<int>(type: "int", nullable: false),
                     HotelID = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    HotelID1 = table.Column<int>(type: "int", nullable: true)
+                    Price = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HotelRooms", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_HotelRooms_HotelAmenity_HotelID",
+                        name: "FK_HotelRooms_Hotels_HotelID",
                         column: x => x.HotelID,
-                        principalTable: "HotelAmenity",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_HotelRooms_Hotels_HotelID1",
-                        column: x => x.HotelID1,
                         principalTable: "Hotels",
-                        principalColumn: "ID");
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_HotelRooms_Rooms_RoomID",
                         column: x => x.RoomID,
@@ -278,6 +257,36 @@ namespace Lab12.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Amenities",
+                columns: new[] { "ID", "Name" },
+                values: new object[] { 1, "A/C" });
+
+            migrationBuilder.InsertData(
+                table: "Hotels",
+                columns: new[] { "ID", "Address", "City", "Name", "Phone", "State" },
+                values: new object[] { 1, "123 Sesame St", "Memphis", "Async Inn Hotel", "555-555-5555", "TN" });
+
+            migrationBuilder.InsertData(
+                table: "Rooms",
+                columns: new[] { "ID", "Layout", "Name" },
+                values: new object[,]
+                {
+                    { 1, 0, "Basic Room" },
+                    { 2, 1, "Basic Single Room" },
+                    { 3, 2, "Basic Double Room" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "HotelRooms",
+                columns: new[] { "ID", "HotelID", "Name", "Price", "RoomID" },
+                values: new object[] { 1, 1, "Basic Double Room", 100.98999999999999, 1 });
+
+            migrationBuilder.InsertData(
+                table: "RoomAmenities",
+                columns: new[] { "ID", "AmenityID", "RoomID" },
+                values: new object[] { 1, 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -324,11 +333,6 @@ namespace Lab12.Migrations
                 column: "HotelID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HotelRooms_HotelID1",
-                table: "HotelRooms",
-                column: "HotelID1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_HotelRooms_RoomID",
                 table: "HotelRooms",
                 column: "RoomID");
@@ -373,9 +377,6 @@ namespace Lab12.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "HotelAmenity");
 
             migrationBuilder.DropTable(
                 name: "Hotels");

@@ -59,4 +59,4 @@ HotelRoom:
 Represents the specific rooms within a hotel. The price and room number are included here because they vary per hotel location.
 This ERD structure ensures normalization of the database and maintains the relationships between different tables efficiently. It can be expanded or modified as per future requirements.
 
-![image](".\Img\Schema.png")
+![image](Schema.png)
